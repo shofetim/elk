@@ -1,0 +1,22 @@
+elasticsearch:
+  image: elasticsearch
+  volumes:
+   - ./data:/usr/share/elasticsearch/data # to persist data
+  ports:
+    - "9200:9200"
+
+logstash:
+  image: logstash
+  command: logstash -f /etc/logstash/logstash.conf
+  links:
+   - elasticsearch
+  volumes:
+   - ./logs:/var/log/
+   - ./config:/etc/logstash
+
+kibana:
+  image: biodynamiccode/kibana
+  links:
+   - elasticsearch
+  ports:
+    - "8080:5601"
