@@ -15,8 +15,8 @@ logstash:
    - ./config:/etc/logstash
 
 kibana:
-  image: biodynamiccode/kibana
+  image: kibana
   links:
    - elasticsearch
   ports:
-    - "8080:5601"
+    - "80:5601"
