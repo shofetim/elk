@@ -1,22 +1,27 @@
-elasticsearch:
-  image: elasticsearch
-  volumes:
-   - ./data:/usr/share/elasticsearch/data # to persist data
-  ports:
-    - "9200:9200"
+version: "3"
 
-logstash:
-  image: logstash
-  command: logstash -f /etc/logstash/logstash.conf
-  links:
-   - elasticsearch
-  volumes:
-   - ./logs:/var/log/
-   - ./config:/etc/logstash
+services:
+  elasticsearch:
+    image: elasticsearch
+    volumes:
+      - data:/usr/share/elasticsearch/data # to persist data
+    ports:
+      - "9200:9200"
 
-kibana:
-  image: kibana
-  links:
-   - elasticsearch
-  ports:
-    - "80:5601"
+  logstash:
+    image: logstash
+    command: logstash -f /etc/logstash/logstash.conf
+    volumes:
+      - ./logs:/var/log/
+      - ./config:/etc/logstash
+
+  kibana:
+    image: kibana
+    ports:
+      - "5601:5601"
+
+volumes:
+  data:
+
+networks:
+  default:
